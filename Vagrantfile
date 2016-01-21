@@ -8,21 +8,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config_path = "config/vagrant"
 
   config.vm.provider "virtualbox" do |v|
-    v.memory = 4096
-    v.cpus = 2
+    v.memory = 16384 #4096
+    v.cpus = 4 #2
   end
+
+  config.ssh.forward_agent = true
 
   config.vm.provision :shell, path: "#{config_path}/build_dependency_setup.sh"
   config.vm.provision :shell, path: "#{config_path}/git_setup.sh"
   config.vm.provision :shell, path: "#{config_path}/zsh_setup.sh"
 
   config.vm.provision :shell, path: "#{config_path}/nodejs_setup.sh"
-  config.vm.provision :shell, path: "#{config_path}/rbenv_setup.sh", privileged: false
+  config.vm.provision :shell, path: "#{config_path}/install-rvm.sh", args: "stable", privileged: false
+  config.vm.provision :shell, path: "#{config_path}/install-ruby.sh", args: "1.9.3", privileged: false
+  config.vm.provision :shell, path: "#{config_path}/install-ruby.sh", args: "2.3.0 'bundler --no-rdoc --no-ri -q'", privileged: false
+  config.vm.provision :shell, path: "#{config_path}/install-ruby.sh", args: "2.3.0 'rails --no-rdoc --no-ri -q -v 5.0.0.beta1'", privileged: false
+  config.vm.provision :shell, path: "#{config_path}/install-ruby.sh", args: "2.3.0 'foreman --no-rdoc --no-ri -q'", privileged: false
 
   config.vm.provision :shell, path: "#{config_path}/imagemagick_setup.sh"
   config.vm.provision :shell, path: "#{config_path}/phantomjs_setup.sh"
 
-  #config.vm.provision :shell, path: "#{config_path}/sqlite_setup.sh"
+  config.vm.provision :shell, path: "#{config_path}/sqlite_setup.sh"
   config.vm.provision :shell, path: "#{config_path}/postgresql_setup.sh"
 
   # PostgreSQL Server port

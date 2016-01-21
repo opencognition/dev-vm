@@ -33,21 +33,32 @@ sudo -u vagrant -H bash -l -c 'curl -L https://get.rvm.io | bash -s stable'
 
 # Install Ruby
 echo "===== Installing Ruby $RUBY_VERSION"
-sudo -u vagrant -H bash -l -c '/home/vagrant/.rvm/bin/rvm install ruby-${RUBY_VERSION} --autolibs=enabled && rvm alias create default ruby-${RUBY_VERSION}'
-
+echo "========================================"
+echo "========================================"
+echo "========================================"
+echo "  "
+echo "'/home/vagrant/.rvm/bin/rvm install ruby-${RUBY_VERSION} --autolibs=enabled && rvm alias create default ruby-${RUBY_VERSION}'"
+echo "  "
+echo "========================================"
+echo "========================================"
+echo "========================================"
+#sudo -u vagrant -H bash -l -c '/home/vagrant/.rvm/bin/rvm install ruby-${RUBY_VERSION} --autolibs=enabled && rvm alias create default ruby-${RUBY_VERSION}'
 #sudo -u vagrant -H bash -l -c '/home/vagrant/.rvm/bin/rvm install ruby-2.3.0 --autolibs=enabled && rvm alias create default ruby-2.3.0'
 
+# sudo -u vagrant -H bash -l -c '/home/vagrant/.rvm/bin/rvm install ruby ${RUBY_VERSION} --autolibs=enabled && rvm alias create default ${RUBY_VERSION}'
+sudo -u vagrant -H bash -l -c '/home/vagrant/.rvm/bin/rvm install ruby-head-2.3 --url https://github.com/github/ruby.git --branch 2.3 --autolibs=enabled && rvm alias create default 2.3'
 
-echo "===== Installing Rubygems $GEMS_VERSION"
-wget -q http://production.cf.rubygems.org/rubygems/rubygems-${GEMS_VERSION}.tgz
-tar xzf rubygems-${GEMS_VERSION}.tgz
-cd rubygems-$GEMS_VERSION
-ruby setup.rb
-cd ..
-rm -rf rubygems-${GEMS_VERSION}*
 
-sudo -u vagrant -H bash -l -c 'gem install bundler --no-rdoc --no-ri -q'
-sudo -u vagrant -H bash -l -c 'gem install rails --no-rdoc --no-ri -q -v ${RAILS_VERSION}'
-sudo -u vagrant -H bash -l -c 'gem install foreman --no-rdoc --no-ri -q'
+# echo "===== Installing Rubygems $GEMS_VERSION"
+# wget -q http://production.cf.rubygems.org/rubygems/rubygems-${GEMS_VERSION}.tgz
+# tar xzf rubygems-${GEMS_VERSION}.tgz
+# cd rubygems-$GEMS_VERSION
+# ruby setup.rb
+# cd ..
+# rm -rf rubygems-${GEMS_VERSION}*
+
+# sudo -u vagrant -H bash -l -c 'gem install bundler --no-rdoc --no-ri -q'
+# sudo -u vagrant -H bash -l -c 'gem install rails --no-rdoc --no-ri -q -v ${RAILS_VERSION}'
+# sudo -u vagrant -H bash -l -c 'gem install foreman --no-rdoc --no-ri -q'
 
 echo "=== End Vagrant Provisioning using 'config/vagrant/rbenv_setup.sh'"
