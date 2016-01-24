@@ -9,6 +9,7 @@ APP_DB_PASS=$APP_DB_USER
 # Edit the following to change the name of the database that is created (defaults to the user name)
 APP_DB_NAME=vagrant_dev
 APP_DB_TEST_NAME=vagrant_test
+APP_DB_PROD_NAME=vagrant_prod
 
 # Edit the following to change the version of PostgreSQL that is installed
 PG_VERSION=9.5
@@ -71,7 +72,7 @@ sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
 
 # Append to pg_hba.conf to add password auth:
 echo "local    all             all                                     md5" >> "$PG_HBA"
-echo "host     all             all             0.0.0.0/0               md5" >> "$PG_HBA"
+echo "host     all             all             0.0.0.0/0               trust" >> "$PG_HBA"
 
 # Explicitly set default client_encoding
 echo "client_encoding = utf8" >> "$PG_CONF"
@@ -96,6 +97,14 @@ EOF
 
 cat << EOF | su - postgres -c psql
 CREATE DATABASE $APP_DB_TEST_NAME WITH OWNER=$APP_DB_USER
+                                   LC_COLLATE='en_US.utf8'
+                                   LC_CTYPE='en_US.utf8'
+                                   ENCODING='UTF8'
+                                   TEMPLATE=template0;
+EOF
+
+cat << EOF | su - postgres -c psql
+CREATE DATABASE $APP_DB_PROD_NAME WITH OWNER=$APP_DB_USER
                                    LC_COLLATE='en_US.utf8'
                                    LC_CTYPE='en_US.utf8'
                                    ENCODING='UTF8'
